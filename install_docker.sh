@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Add Docker's official GPG key:
 apt-get update
 apt-get -y dist-upgrade
