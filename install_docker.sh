@@ -30,3 +30,11 @@ if [ "$reponse" == "o" ]; then
 else
     echo "Opération annulée. Docker n'a pas été supprimé."
 fi
+
+# Rebbot
+read -p "Voulez-vous reboot ? (o/n) : " reponse
+if [ "$reponse" == "o" ]; then
+    reboot
+else
+    echo "Reboot annulée."
+fi
