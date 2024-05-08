@@ -21,3 +21,12 @@ apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin do
 # Run Docker Hello World
  docker run --name hello-world -d hello-world
 
+# Destruction du docker
+read -p "Voulez-vous supprimer Docker ? (o/n) : " reponse
+if [ "$reponse" == "o" ]; then
+    echo "Suppression du Docker..."
+    docker rm -f hello-world
+    docker image rm -f hello-world
+else
+    echo "Opération annulée. Docker n'a pas été supprimé."
+fi
