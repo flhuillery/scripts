@@ -34,7 +34,7 @@ fi
 # Rebbot
 read -p "Voulez-vous reboot ? (o/n) : " reponse
 if [ "$reponse" == "o" ]; then
-    reboot
+    /sbin/reboot
 else
     echo "Reboot annulée."
 fi
