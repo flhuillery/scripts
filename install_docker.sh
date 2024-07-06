@@ -31,6 +31,12 @@ else
     echo "Opération annulée. Docker n'a pas été supprimé."
 fi
 
+# Add user docker
+/sbin adduser dockeruser
+echo "Entrer le mot de passe pour l'utilisateur dockeruser"
+passwd dockeruser
+/sbin/sbinusermod -aG docker dockeruser
+
 # Rebbot
 read -p "Voulez-vous reboot ? (o/n) : " reponse
 if [ "$reponse" == "o" ]; then
