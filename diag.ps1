@@ -8,11 +8,13 @@ $form.Size = New-Object System.Drawing.Size(400, 400)
 # Création du bouton pour les services
 $buttonServices = New-Object System.Windows.Forms.Button
 $buttonServices.Text = "Lister les services auto"
+$buttonService.AutoSize = $true
 $buttonServices.Location = New-Object System.Drawing.Point(100, 50)
 
 # Création du bouton pour les informations système
 $buttonInfo = New-Object System.Windows.Forms.Button
 $buttonInfo.Text = "Afficher les infos système"
+$buttonInfo.AutoSize = $true
 $buttonInfo.Location = New-Object System.Drawing.Point(100, 100)
 
 # Création de la liste
