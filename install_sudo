@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Vérifie si sudo est installé
+if ! command -v sudo &>/dev/null; then
+    echo "sudo n'est pas installé. Installation en cours..."
+    apt update && apt install -y sudo
+    if [ $? -ne 0 ]; then
+        echo "Erreur lors de l'installation de sudo."
+        exit 1
+    fi
+else
+    echo "sudo est déjà installé."
+fi
+
+# sudo n'a pas de service à démarrer, mais on vérifie si le binaire est disponible
+if ! command -v sudo &>/dev/null; then
+    echo "sudo semble toujours indisponible après installation. Abandon."
+    exit 1
+fi
+
+# Demande du nom de l'utilisateur
+read -p "Entrez le nom de l'utilisateur à ajouter à sudo : " username
+
+# Vérifie si l'utilisateur existe
+if id "$username" &>/dev/null; then
+    usermod -aG sudo "$username"
+    echo "L'utilisateur $username a été ajouté au groupe sudo."
+else
+    echo "L'utilisateur $username n'existe pas."
+    exit 1
+fi
