@@ -36,6 +36,9 @@ services:
     volumes:
       - ./Prometheus_data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d' # Rétention des données pour 1 mois
     networks:
       - monitoring
 
