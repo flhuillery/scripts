@@ -18,7 +18,7 @@ CADVISOR_PORT=8080
 GRAFANA_PORT=3000
 
 # Credentials Grafana
-GRAFANA_USER=admin
+GRAFANA_USER=admingrafana
 GRAFANA_PASSWORD=changeme
 EOL
 
@@ -34,7 +34,7 @@ services:
     ports:
       - "\${PROMETHEUS_PORT}:9090"
     volumes:
-      - prometheus_data:/prometheus
+      - ./Prometheus_data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
       - monitoring
@@ -72,7 +72,7 @@ services:
       - GF_SECURITY_ADMIN_USER=\${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=\${GRAFANA_PASSWORD}
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./Grafana_data:/var/lib/grafana
     networks:
       - monitoring
 
@@ -103,6 +103,13 @@ scrape_configs:
     static_configs:
       - targets: ['cadvisor:8080']
 EOL
+
+# Modification des droits sur le dossier 
+mkdir Grafana_data
+mkdir Prometheus_data
+chmod 770 Grafana_data
+chmod 770 Prometheus_data
+
 
 echo "✅ Configuration complète avec restart: always !"
 echo "📂 Dossier créé : $DIR"
