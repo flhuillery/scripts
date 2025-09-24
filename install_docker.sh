@@ -1,11 +1,21 @@
 #!/bin/bash
 
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+# Error handling
+set -e
+
 # Add Docker's official GPG key:
-apt update
+echo "Installing Docker prerequisites..."
+apt update || { echo "Failed to update apt"; exit 1; }
 apt -y dist-upgrade
 apt -y install ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc || { echo "Failed to download Docker GPG key"; exit 1; }
 chmod a+r /etc/apt/keyrings/docker.asc
 
 # Add the repository to Apt sources:
@@ -19,22 +29,24 @@ apt update
 apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose gpg
 
 # Run Docker Hello World
- docker run --name hello-world -d hello-world
+echo "Testing Docker installation..."
+docker run --name hello-world -d hello-world || { echo "Failed to run hello-world container"; exit 1; }
 
-# Destruction du docker
-read -p "Voulez-vous supprimer Docker ? (o/n) : " reponse
-if [ "$reponse" == "o" ]; then
-    echo "Suppression du Docker..."
+# Clean up Docker test
+read -p "Do you want to remove the test container? (y/n): " response
+if [ "$response" = "y" ]; then
+    echo "Removing test container..."
     docker rm -f hello-world
     docker image rm -f hello-world
 else
-    echo "Opération annulée. Docker n'a pas été supprimé."
+    echo "Test container was kept."
 fi
 
-# Rebbot
-read -p "Voulez-vous reboot ? (o/n) : " reponse
-if [ "$reponse" == "o" ]; then
+# Reboot option
+read -p "Do you want to reboot? (y/n): " response
+if [ "$response" = "y" ]; then
+    echo "Rebooting system..."
     /sbin/reboot
 else
-    echo "Reboot annulée."
+    echo "Reboot cancelled."
 fi
